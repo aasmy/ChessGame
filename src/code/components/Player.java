@@ -14,18 +14,12 @@ public class Player {
      * @param color the player color
      */
     public Player(final String name, final Color color) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Player name cannot be empty.");
-        }
-
-        if (color == null) {
-            throw new IllegalArgumentException("Player color cannot be null.");
-        }
+        validateName(name);
+        validateColor(color);
 
         this.name = name;
         this.color = color;
     }
-
     /**
      * Returns the player name.
      *
@@ -42,6 +36,28 @@ public class Player {
      */
     public Color getColor() {
         return color;
+    }
+
+    /**
+     * Validates the player name.
+     *
+     * @param name the player name
+     */
+    private void validateName(final String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Player name cannot be empty.");
+        }
+    }
+
+    /**
+     * Validates the player color.
+     *
+     * @param color the player color
+     */
+    private void validateColor(final Color color) {
+        if (color == null) {
+            throw new IllegalArgumentException("Player color cannot be null.");
+        }
     }
 
     /**
