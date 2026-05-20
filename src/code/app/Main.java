@@ -19,6 +19,7 @@ public class Main {
         final StandardChessBoard board = new StandardChessBoard();
 
         board.initializeBoardWithPieces(whitePlayer, blackPlayer);
+        board.printBoard();
 
         System.out.println("ChessGame project started");
     }
