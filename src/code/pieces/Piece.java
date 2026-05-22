@@ -1,10 +1,12 @@
 package pieces;
 
+import board.Board;
 import components.Player;
 import components.Square;
 import movements.MoveStrategy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,16 +24,14 @@ public abstract class Piece {
      * @param owner the player who owns this piece
      * @param location the current piece location
      */
-    public Piece(final Player owner,
-                 final Square location)
-    {
+    public Piece(final Player owner, final Square location) {
         validateOwner(owner);
         validateLocation(location);
 
         this.owner = owner;
         this.location = location;
-        this.moveStrategies = new ArrayList<>();
-        this.hasMoved = false;
+        moveStrategies = new ArrayList<>();
+        hasMoved = false;
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class Piece {
     /**
      * Returns the current location of this piece
      *
-     * @return the piece location
+     * @return the current location
      */
     public Square getLocation() {
         return location;
@@ -55,7 +55,7 @@ public abstract class Piece {
     /**
      * Updates the current location of this piece
      *
-     * @param location the new piece location
+     * @param location the new location
      */
     public void setLocation(final Square location) {
         validateLocation(location);
@@ -66,7 +66,7 @@ public abstract class Piece {
     /**
      * Checks whether this piece has moved before
      *
-     * @return true if this piece has moved before
+     * @return true if the piece has moved
      */
     public boolean hasMoved() {
         return hasMoved;
@@ -80,12 +80,12 @@ public abstract class Piece {
     }
 
     /**
-     * Returns the movement strategies assigned to this piece
+     * Returns the movement strategies of this piece
      *
      * @return the movement strategies
      */
     public List<MoveStrategy> getMoveStrategies() {
-        return new ArrayList<>(moveStrategies);
+        return Collections.unmodifiableList(moveStrategies);
     }
 
     /**
@@ -93,12 +93,32 @@ public abstract class Piece {
      *
      * @param moveStrategy the movement strategy to add
      */
-    protected void addMoveStrategy(final MoveStrategy moveStrategy) {
+    public void addMoveStrategy(final MoveStrategy moveStrategy) {
         if (moveStrategy == null) {
-            throw new IllegalArgumentException("Move strategy cannot be null.");
+            throw new IllegalArgumentException("Move strategy cannot be null");
         }
 
         moveStrategies.add(moveStrategy);
+    }
+
+    /**
+     * Checks whether this piece can move to the given square
+     *
+     * @param board the board where the move is checked
+     * @param to the destination square
+     * @return true if at least one movement strategy accepts the move
+     */
+    public boolean canMove(final Board board, final Square to) {
+        validateBoard(board);
+        validateLocation(to);
+
+        for (final MoveStrategy moveStrategy : moveStrategies) {
+            if (moveStrategy.validateMove(board, location, to)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -115,28 +135,21 @@ public abstract class Piece {
      */
     public abstract String getSymbol();
 
-    /**
-     * Validates the piece owner
-     *
-     * @param owner the piece owner
-     */
     private void validateOwner(final Player owner) {
         if (owner == null) {
-            throw new IllegalArgumentException("Piece owner cannot be null.");
+            throw new IllegalArgumentException("Owner cannot be null");
         }
     }
 
-    /**
-     * Validates the piece location
-     *
-     * @param location the piece location
-     */
     private void validateLocation(final Square location) {
         if (location == null) {
-            throw new IllegalArgumentException("Piece location cannot be null.");
+            throw new IllegalArgumentException("Location cannot be null");
+        }
+    }
+
+    private void validateBoard(final Board board) {
+        if (board == null) {
+            throw new IllegalArgumentException("Board cannot be null");
         }
     }
 }
-
-
-
