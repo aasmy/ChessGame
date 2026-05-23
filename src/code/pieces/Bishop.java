@@ -2,6 +2,7 @@ package pieces;
 
 import components.Player;
 import components.Square;
+import movements.DiagonalMoveStrategy;
 
 /**
  * Represents a bishop chess piece
@@ -19,6 +20,8 @@ public class Bishop extends Piece {
     public Bishop(final Player owner,
                   final Square location) {
         super(owner, location);
+        addMoveStrategy(new DiagonalMoveStrategy());
+
     }
 
     /**

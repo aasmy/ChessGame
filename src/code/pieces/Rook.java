@@ -2,6 +2,8 @@ package pieces;
 
 import components.Player;
 import components.Square;
+import movements.HorizontalMoveStrategy;
+import movements.VerticalMoveStrategy;
 
 /**
  * Represents a rook chess piece
@@ -19,6 +21,8 @@ public class Rook extends Piece {
     public Rook(final Player owner,
                 final Square location) {
         super(owner, location);
+        addMoveStrategy(new HorizontalMoveStrategy());
+        addMoveStrategy(new VerticalMoveStrategy());
     }
 
     /**

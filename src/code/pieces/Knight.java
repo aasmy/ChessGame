@@ -2,6 +2,7 @@ package pieces;
 
 import components.Player;
 import components.Square;
+import movements.KnightMoveStrategy;
 
 /**
  * Represents a knight chess piece
@@ -19,6 +20,8 @@ public class Knight extends Piece {
     public Knight(final Player owner,
                   final Square location) {
         super(owner, location);
+        addMoveStrategy(new KnightMoveStrategy());
+
     }
 
     /**

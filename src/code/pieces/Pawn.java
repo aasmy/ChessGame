@@ -2,6 +2,9 @@ package pieces;
 
 import components.Player;
 import components.Square;
+import movements.OneSquareForwardMoveStrategy;
+import movements.PawnDiagonalCaptureMoveStrategy;
+import movements.TwoSquaresForwardMoveStrategy;
 
 /**
  * Represents a pawn chess piece
@@ -19,6 +22,10 @@ public class Pawn extends Piece {
     public Pawn(final Player owner,
                 final Square location) {
         super(owner, location);
+
+        addMoveStrategy(new OneSquareForwardMoveStrategy());
+        addMoveStrategy(new TwoSquaresForwardMoveStrategy());
+        addMoveStrategy(new PawnDiagonalCaptureMoveStrategy());
     }
 
     /**
