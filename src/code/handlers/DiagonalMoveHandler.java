@@ -7,6 +7,8 @@ import components.Square;
  * Validates that a move is diagonal
  */
 public class DiagonalMoveHandler extends BaseHandler {
+    private static final int NO_POSITION_CHANGE = 0;
+
     /**
      * Checks whether row and column changes are equal in size
      *
@@ -16,10 +18,14 @@ public class DiagonalMoveHandler extends BaseHandler {
      * @return true if the move is diagonal
      */
     @Override
-    protected boolean isValid(final Board board, final Square from, final Square to) {
+    protected boolean isValid(final Board board,
+                              final Square from,
+                              final Square to)
+    {
         final int rowDifference = Math.abs(to.getRow() - from.getRow());
         final int columnDifference = Math.abs(to.getColumn() - from.getColumn());
 
-        return rowDifference == columnDifference;
+        return rowDifference != NO_POSITION_CHANGE &&
+               rowDifference == columnDifference;
     }
 }
