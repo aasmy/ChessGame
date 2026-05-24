@@ -42,8 +42,7 @@ public class ChessGame {
         printBoard();
 
         while (true) {
-            System.out.print(currentPlayer.getName() + " move: ");
-
+            printMovePrompt();
             final String moveText = scanner.nextLine();
 
             if (moveText.equalsIgnoreCase("quit")) {
@@ -102,5 +101,12 @@ public class ChessGame {
         } else {
             currentPlayer = whitePlayer;
         }
+    }
+
+    /**
+     * Prints the current player's move prompt
+     */
+    private void printMovePrompt() {
+        System.out.print(currentPlayer.getName() + " move: ");
     }
 }
