@@ -21,11 +21,11 @@ public class InputValidator {
     public boolean isValidMove(final Board board,
                                final Player currentPlayer,
                                final Square from,
-                               final Square to)
-    {
+                               final Square to) {
         validateInputs(board, currentPlayer, from, to);
 
-        return hasCurrentPlayerPiece(board, currentPlayer, from)
+        return !from.equals(to)
+                && hasCurrentPlayerPiece(board, currentPlayer, from)
                 && canSelectedPieceMove(board, from, to);
     }
 
