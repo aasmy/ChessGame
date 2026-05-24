@@ -81,10 +81,23 @@ public class ChessGame {
         }
 
         moveExecutor.executeMove(board, from, to);
+        printCheckMessageIfNeeded();
         switchTurn();
 
         return true;
     }
+
+    /**
+     * Prints a check message if the opponent king is under attack
+     */
+    private void printCheckMessageIfNeeded() {
+        final Color opponentColor = currentPlayer.getColor().getOppositeColor();
+
+        if (GameStateChecker.isCheck(board, opponentColor)) {
+            System.out.println("Check");
+        }
+    }
+
 
     /**
      * Switches the active player turn
