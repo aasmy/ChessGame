@@ -52,17 +52,7 @@ public class ChessGame {
                 break;
             }
 
-            try {
-                final boolean movePlayed = playMove(moveText);
-
-                printMoveResult(movePlayed);
-
-                if (movePlayed) {
-                    printBoard();
-                }
-            } catch (final IllegalArgumentException exception) {
-                System.out.println(exception.getMessage());
-            }
+            handleMoveInput(moveText);
         }
     }
 
@@ -122,6 +112,25 @@ public class ChessGame {
             System.out.println("Move played");
         } else {
             System.out.println("Invalid move");
+        }
+    }
+
+    /**
+     * Handles one move entered from the console
+     *
+     * @param moveText the move text entered by the user
+     */
+    private void handleMoveInput(final String moveText) {
+        try {
+            final boolean movePlayed = playMove(moveText);
+
+            printMoveResult(movePlayed);
+
+            if (movePlayed) {
+                printBoard();
+            }
+        } catch (final IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 }
