@@ -53,9 +53,9 @@ public class ChessGame {
             try {
                 final boolean movePlayed = playMove(moveText);
 
-                if (!movePlayed) {
-                    System.out.println("Invalid move");
-                } else {
+                printMoveResult(movePlayed);
+
+                if (movePlayed) {
                     printBoard();
                 }
             } catch (final IllegalArgumentException exception) {
@@ -108,5 +108,18 @@ public class ChessGame {
      */
     private void printMovePrompt() {
         System.out.print(currentPlayer.getName() + " move: ");
+    }
+
+    /**
+     * Prints the result of a move attempt
+     *
+     * @param movePlayed true if the move was played successfully
+     */
+    private void printMoveResult(final boolean movePlayed) {
+        if (movePlayed) {
+            System.out.println("Move played");
+        } else {
+            System.out.println("Invalid move");
+        }
     }
 }
