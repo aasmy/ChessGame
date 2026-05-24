@@ -81,22 +81,21 @@ public class ChessGame {
         }
 
         moveExecutor.executeMove(board, from, to);
-        printCheckMessageIfNeeded();
         switchTurn();
 
         return true;
     }
 
     /**
-     * Prints a check or checkmate message if the opponent king is under attack
+     * Prints a check or checkmate message if the current player king is under attack
      */
     private void printCheckMessageIfNeeded() {
-        final Color opponentColor = currentPlayer.getColor().getOppositeColor();
+        final Color checkedColor = currentPlayer.getColor();
 
-        if (GameStateChecker.isCheckmate(board, opponentColor)) {
+        if (GameStateChecker.isCheckmate(board, checkedColor)) {
             System.out.println("Checkmate");
             isRunning = false;
-        } else if (GameStateChecker.isCheck(board, opponentColor)) {
+        } else if (GameStateChecker.isCheck(board, checkedColor)) {
             System.out.println("Check");
         }
     }
@@ -120,18 +119,6 @@ public class ChessGame {
         System.out.print(currentPlayer.getName() + " move: ");
     }
 
-    /**
-     * Prints the result of a move attempt
-     *
-     * @param movePlayed true if the move was played successfully
-     */
-    private void printMoveResult(final boolean movePlayed) {
-        if (movePlayed) {
-            System.out.println("Move played");
-        } else {
-            System.out.println("Invalid move");
-        }
-    }
 
     /**
      * Handles one move entered from the console
@@ -142,10 +129,12 @@ public class ChessGame {
         try {
             final boolean movePlayed = playMove(moveText);
 
-            printMoveResult(movePlayed);
-
             if (movePlayed) {
+                System.out.println("Move played");
+                printCheckMessageIfNeeded();
                 printBoard();
+            } else {
+                System.out.println("Invalid move");
             }
         } catch (final IllegalArgumentException exception) {
             System.out.println(exception.getMessage());
