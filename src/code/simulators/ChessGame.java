@@ -88,12 +88,14 @@ public class ChessGame {
     }
 
     /**
-     * Prints a check message if the opponent king is under attack
+     * Prints a check or checkmate message if the opponent king is under attack
      */
     private void printCheckMessageIfNeeded() {
         final Color opponentColor = currentPlayer.getColor().getOppositeColor();
 
-        if (GameStateChecker.isCheck(board, opponentColor)) {
+        if (GameStateChecker.isCheckmate(board, opponentColor)) {
+            System.out.println("Checkmate");
+        } else if (GameStateChecker.isCheck(board, opponentColor)) {
             System.out.println("Check");
         }
     }
