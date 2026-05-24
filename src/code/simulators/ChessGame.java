@@ -40,9 +40,11 @@ public class ChessGame {
         final Scanner scanner = new Scanner(System.in);
 
         printBoard();
+        System.out.println("Enter moves like e2 e4, or type quit to exit");
 
         while (true) {
             printMovePrompt();
+
             final String moveText = scanner.nextLine();
 
             if (moveText.equalsIgnoreCase("quit")) {
