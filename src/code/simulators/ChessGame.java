@@ -47,7 +47,7 @@ public class ChessGame {
 
             final String moveText = scanner.nextLine();
 
-            if (moveText.equalsIgnoreCase("quit")) {
+            if (isQuitCommand(moveText)) {
                 System.out.println("Game ended");
                 break;
             }
@@ -62,6 +62,8 @@ public class ChessGame {
     public void printBoard() {
         board.printBoard();
     }
+
+
 
     /**
      * Tries to play one move written in chess square format
@@ -132,5 +134,15 @@ public class ChessGame {
         } catch (final IllegalArgumentException exception) {
             System.out.println(exception.getMessage());
         }
+    }
+
+    /**
+     * Checks whether the user wants to quit the game
+     *
+     * @param moveText the move text entered by the user
+     * @return true if the user wants to quit
+     */
+    private boolean isQuitCommand(final String moveText) {
+        return moveText.equalsIgnoreCase("quit");
     }
 }
