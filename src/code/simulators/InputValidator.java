@@ -26,7 +26,43 @@ public class InputValidator {
 
         return !from.equals(to)
                 && hasCurrentPlayerPiece(board, currentPlayer, from)
-                && canSelectedPieceMove(board, from, to);
+                && canSelectedPieceMove(board, from, to)
+                && !leavesCurrentPlayerInCheck(board, currentPlayer, from, to);
+    }
+
+
+    /**
+     * Checks whether the move would leave the current player king in check
+     *
+     * @param board the chess board
+     * @param currentPlayer the player making the move
+     * @param from the starting square
+     * @param to the destination square
+     * @return true if the move leaves the current player in check
+     */
+    private boolean leavesCurrentPlayerInCheck(final Board board,
+                                               final Player currentPlayer,
+                                               final Square from,
+                                               final Square to) {
+        final Piece movingPiece = board.getPieceAt(from);
+        final Piece capturedPiece = board.getPieceAt(to);
+
+        board.movePiece(from, to);
+
+        final boolean kingInCheck = GameStateChecker.isCheck(
+                board,
+                currentPlayer.getColor()
+        );
+
+        board.setPieceAt(movingPiece, from);
+
+        if (capturedPiece == null) {
+            board.removePieceAt(to);
+        } else {
+            board.setPieceAt(capturedPiece, to);
+        }
+
+        return kingInCheck;
     }
 
     /**
