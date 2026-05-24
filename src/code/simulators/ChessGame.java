@@ -17,6 +17,7 @@ public class ChessGame {
     private final InputValidator inputValidator;
     private final MoveExecutor moveExecutor;
     private Player currentPlayer;
+    private boolean isRunning;
 
     /**
      * Creates a chess game with default players and a standard board
@@ -29,6 +30,7 @@ public class ChessGame {
         inputValidator = new InputValidator();
         moveExecutor = new MoveExecutor();
         currentPlayer = whitePlayer;
+        isRunning = true;
 
         board.initializeBoardWithPieces(whitePlayer, blackPlayer);
     }
@@ -42,17 +44,15 @@ public class ChessGame {
         printBoard();
         System.out.println("Enter moves like e2 e4, or type quit to exit");
 
-        while (true) {
+        while (isRunning) {
             printMovePrompt();
-
             final String moveText = scanner.nextLine();
 
             if (isQuitCommand(moveText)) {
-                System.out.println("Game ended");
-                break;
+                isRunning = false;
+            } else {
+                handleMoveInput(moveText);
             }
-
-            handleMoveInput(moveText);
         }
     }
 
@@ -95,6 +95,7 @@ public class ChessGame {
 
         if (GameStateChecker.isCheckmate(board, opponentColor)) {
             System.out.println("Checkmate");
+            isRunning = false;
         } else if (GameStateChecker.isCheck(board, opponentColor)) {
             System.out.println("Check");
         }
