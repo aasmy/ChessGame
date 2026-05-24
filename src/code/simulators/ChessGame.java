@@ -51,13 +51,17 @@ public class ChessGame {
                 break;
             }
 
-            final boolean movePlayed = playMove(moveText);
+            try {
+                final boolean movePlayed = playMove(moveText);
 
-            if (!movePlayed) {
-                System.out.println("Invalid move");
+                if (!movePlayed) {
+                    System.out.println("Invalid move");
+                } else {
+                    printBoard();
+                }
+            } catch (final IllegalArgumentException exception) {
+                System.out.println(exception.getMessage());
             }
-
-            printBoard();
         }
     }
 
