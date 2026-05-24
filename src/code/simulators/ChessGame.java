@@ -4,6 +4,7 @@ import board.StandardChessBoard;
 import components.Color;
 import components.Player;
 import components.Square;
+import java.util.Scanner;
 
 /**
  * Controls the main chess game flow
@@ -30,6 +31,34 @@ public class ChessGame {
         currentPlayer = whitePlayer;
 
         board.initializeBoardWithPieces(whitePlayer, blackPlayer);
+    }
+
+    /**
+     * Starts a simple console loop for playing moves
+     */
+    public void start() {
+        final Scanner scanner = new Scanner(System.in);
+
+        printBoard();
+
+        while (true) {
+            System.out.print(currentPlayer.getName() + " move: ");
+
+            final String moveText = scanner.nextLine();
+
+            if (moveText.equalsIgnoreCase("quit")) {
+                System.out.println("Game ended");
+                break;
+            }
+
+            final boolean movePlayed = playMove(moveText);
+
+            if (!movePlayed) {
+                System.out.println("Invalid move");
+            }
+
+            printBoard();
+        }
     }
 
     /**
