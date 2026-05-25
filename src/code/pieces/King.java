@@ -3,6 +3,7 @@ package pieces;
 import components.Player;
 import components.Square;
 import movements.KingMoveStrategy;
+import movements.CastlingMoveStrategy;
 
 /**
  * Represents a king chess piece
@@ -21,7 +22,7 @@ public class King extends Piece {
                 final Square location) {
         super(owner, location);
         addMoveStrategy(new KingMoveStrategy());
-
+        addMoveStrategy(new CastlingMoveStrategy());
     }
 
     /**
