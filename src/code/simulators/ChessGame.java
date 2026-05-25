@@ -1,4 +1,5 @@
 package simulators;
+
 import board.StandardChessBoard;
 import components.Color;
 import components.PieceType;
@@ -6,7 +7,7 @@ import components.Player;
 import components.Square;
 import pieces.Pawn;
 import pieces.Piece;
-import pieces.PieceFactory;
+import specialmoves.Promotion;
 
 import java.util.Scanner;
 
@@ -164,7 +165,8 @@ public class ChessGame {
      * @return true if the user wants to quit
      */
     private boolean isQuitCommand(final String moveText) {
-        return "quit".equalsIgnoreCase(moveText.trim());    }
+        return "quit".equalsIgnoreCase(moveText.trim());
+    }
 
     /**
      * Checks whether the player wants to resign
@@ -197,13 +199,8 @@ public class ChessGame {
         }
 
         final PieceType promotionType = askForPromotionType();
-        final Piece promotedPiece = PieceFactory.createPiece(
-                promotionType,
-                currentPlayer,
-                location
-        );
 
-        board.setPieceAt(promotedPiece, location);
+        new Promotion().promote(board, location, promotionType);
     }
 
     /**
