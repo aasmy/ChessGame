@@ -1,15 +1,23 @@
 package simulators;
-
 import board.StandardChessBoard;
 import components.Color;
+import components.PieceType;
 import components.Player;
 import components.Square;
+import pieces.Pawn;
+import pieces.Piece;
+import pieces.PieceFactory;
+
 import java.util.Scanner;
 
 /**
  * Controls the main chess game flow
  */
 public class ChessGame {
+
+    private static final int WHITE_PROMOTION_ROW = 0;
+    private static final int BLACK_PROMOTION_ROW = 7;
+
     private final Player whitePlayer;
     private final Player blackPlayer;
     private final StandardChessBoard board;
@@ -18,6 +26,7 @@ public class ChessGame {
     private final MoveExecutor moveExecutor;
     private Player currentPlayer;
     private boolean isRunning;
+    private final Scanner scanner;
 
     /**
      * Creates a chess game with default players and a standard board
@@ -31,6 +40,7 @@ public class ChessGame {
         moveExecutor = new MoveExecutor();
         currentPlayer = whitePlayer;
         isRunning = true;
+        scanner = new Scanner(System.in);
 
         board.initializeBoardWithPieces(whitePlayer, blackPlayer);
     }
@@ -39,7 +49,6 @@ public class ChessGame {
      * Starts a simple console loop for playing moves
      */
     public void start() {
-        final Scanner scanner = new Scanner(System.in);
 
         printBoard();
         System.out.println("Enter moves like e2 e4, type resign to resign, or quit to exit");
@@ -82,6 +91,7 @@ public class ChessGame {
         }
 
         moveExecutor.executeMove(board, from, to);
+        handlePromotionIfNeeded(to);
         switchTurn();
 
         return true;
@@ -151,8 +161,7 @@ public class ChessGame {
      * @return true if the user wants to quit
      */
     private boolean isQuitCommand(final String moveText) {
-        return moveText.equalsIgnoreCase("quit");
-    }
+        return "quit".equalsIgnoreCase(moveText.trim());    }
 
     /**
      * Checks whether the player wants to resign
@@ -170,5 +179,65 @@ public class ChessGame {
     private void handleResign() {
         System.out.println(currentPlayer.getName() + " resigned");
         isRunning = false;
+    }
+
+    /**
+     * Promotes a pawn if it reaches the final row
+     *
+     * @param location the pawn location after moving
+     */
+    private void handlePromotionIfNeeded(final Square location) {
+        final Piece piece = board.getPieceAt(location);
+
+        if (!(piece instanceof Pawn) || !isPromotionRow(location)) {
+            return;
+        }
+
+        final PieceType promotionType = askForPromotionType();
+        final Piece promotedPiece = PieceFactory.createPiece(
+                promotionType,
+                currentPlayer,
+                location
+        );
+
+        board.setPieceAt(promotedPiece, location);
+    }
+
+    /**
+     * Checks whether a square is a promotion row
+     *
+     * @param location the square to check
+     * @return true if the square is a promotion row
+     */
+    private boolean isPromotionRow(final Square location) {
+        final int row = location.getRow();
+
+        return row == WHITE_PROMOTION_ROW || row == BLACK_PROMOTION_ROW;
+    }
+
+    /**
+     * Asks the current player to choose a promotion piece
+     *
+     * @return the selected piece type
+     */
+    private PieceType askForPromotionType() {
+        while (true) {
+            System.out.print("Promote to queen, rook, bishop, or knight: ");
+
+            final String choice = scanner.nextLine().trim().toLowerCase();
+
+            switch (choice) {
+                case "queen":
+                    return PieceType.QUEEN;
+                case "rook":
+                    return PieceType.ROOK;
+                case "bishop":
+                    return PieceType.BISHOP;
+                case "knight":
+                    return PieceType.KNIGHT;
+                default:
+                    System.out.println("Invalid promotion choice");
+            }
+        }
     }
 }
