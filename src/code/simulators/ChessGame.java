@@ -5,6 +5,7 @@ import components.Color;
 import components.PieceType;
 import components.Player;
 import components.Square;
+import exceptions.InvalidMoveException;
 import pieces.Pawn;
 import pieces.Piece;
 import specialmoves.Promotion;
@@ -80,22 +81,19 @@ public class ChessGame {
      * Tries to play one move written in chess square format
      *
      * @param moveText the move text written by the user
-     * @return true if the move was played
      */
-    public boolean playMove(final String moveText) {
+    public void playMove(final String moveText) {
         final Square[] squares = inputParser.parseMove(moveText);
         final Square from = squares[0];
         final Square to = squares[1];
 
         if (!inputValidator.isValidMove(board, currentPlayer, from, to)) {
-            return false;
+            throw new InvalidMoveException("Invalid move");
         }
 
         moveExecutor.executeMove(board, from, to);
         handlePromotionIfNeeded(to);
         switchTurn();
-
-        return true;
     }
 
 
@@ -144,15 +142,12 @@ public class ChessGame {
      */
     private void handleMoveInput(final String moveText) {
         try {
-            final boolean movePlayed = playMove(moveText);
-
-            if (movePlayed) {
-                System.out.println("Move played");
-                printCheckMessageIfNeeded();
-                printBoard();
-            } else {
-                System.out.println("Invalid move");
-            }
+            playMove(moveText);
+            System.out.println("Move played");
+            printCheckMessageIfNeeded();
+            printBoard();
+        } catch (final InvalidMoveException exception) {
+            System.out.println(exception.getMessage());
         } catch (final IllegalArgumentException exception) {
             System.out.println(exception.getMessage());
         }
