@@ -5,6 +5,7 @@ import components.Square;
 import pieces.King;
 import pieces.Piece;
 import pieces.Rook;
+import simulators.GameStateChecker;
 
 /**
  * Validates a king castling move
@@ -42,6 +43,14 @@ public class CastlingMoveStrategy implements MoveStrategy {
             return false;
         }
 
+        if (GameStateChecker.isCheck(board, king.getOwner().getColor())) {
+            return false;
+        }
+
+        if (passesThroughCheck(board, king, from, to)) {
+            return false;
+        }
+
         final Square rookSquare = getRookSquare(board, from, to);
         final Piece rook = board.getPieceAt(rookSquare);
 
@@ -50,6 +59,7 @@ public class CastlingMoveStrategy implements MoveStrategy {
                 && !rook.hasMoved()
                 && isPathClear(board, from, rookSquare);
     }
+
     /**
      * Checks whether the input values are valid enough for castling validation
      *
@@ -146,5 +156,40 @@ public class CastlingMoveStrategy implements MoveStrategy {
         }
 
         return LEFT_STEP;
+    }
+
+
+    /**
+     * Checks whether the king passes through a checked square while castling
+     *
+     * @param board the chess board
+     * @param king the castling king
+     * @param from the king starting square
+     * @param to the king destination square
+     * @return true if the king passes through check
+     */
+    private boolean passesThroughCheck(final Board board,
+                                       final Piece king,
+                                       final Square from,
+                                       final Square to) {
+        final int step = getColumnStep(from, to);
+        final Square passingSquare = new Square(from.getRow(), from.getColumn() + step);
+        final Square originalLocation = king.getLocation();
+        final Piece pieceAtPassingSquare = board.getPieceAt(passingSquare);
+
+        board.removePieceAt(from);
+        board.setPieceAt(king, passingSquare);
+
+        final boolean passesThroughCheck =
+                GameStateChecker.isCheck(board, king.getOwner().getColor());
+
+        board.removePieceAt(passingSquare);
+        board.setPieceAt(king, originalLocation);
+
+        if (pieceAtPassingSquare != null) {
+            board.setPieceAt(pieceAtPassingSquare, passingSquare);
+        }
+
+        return passesThroughCheck;
     }
 }
