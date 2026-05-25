@@ -42,14 +42,15 @@ public class ChessGame {
         final Scanner scanner = new Scanner(System.in);
 
         printBoard();
-        System.out.println("Enter moves like e2 e4, or type quit to exit");
-
+        System.out.println("Enter moves like e2 e4, type resign to resign, or quit to exit");
         while (isRunning) {
             printMovePrompt();
             final String moveText = scanner.nextLine();
 
             if (isQuitCommand(moveText)) {
                 isRunning = false;
+            } else if (isResignCommand(moveText)) {
+                handleResign();
             } else {
                 handleMoveInput(moveText);
             }
@@ -85,6 +86,8 @@ public class ChessGame {
 
         return true;
     }
+
+
 
     /**
      * Prints a check or checkmate message if the current player king is under attack
@@ -149,5 +152,23 @@ public class ChessGame {
      */
     private boolean isQuitCommand(final String moveText) {
         return moveText.equalsIgnoreCase("quit");
+    }
+
+    /**
+     * Checks whether the player wants to resign
+     *
+     * @param moveText the entered move text
+     * @return true if the input is a resign command
+     */
+    private boolean isResignCommand(final String moveText) {
+        return "resign".equalsIgnoreCase(moveText.trim());
+    }
+
+    /**
+     * Ends the game when the current player resigns
+     */
+    private void handleResign() {
+        System.out.println(currentPlayer.getName() + " resigned");
+        isRunning = false;
     }
 }
