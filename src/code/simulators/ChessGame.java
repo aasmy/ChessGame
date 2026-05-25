@@ -110,6 +110,9 @@ public class ChessGame {
             isRunning = false;
         } else if (GameStateChecker.isCheck(board, checkedColor)) {
             System.out.println("Check");
+        } else if (GameStateChecker.isStalemate(board, checkedColor)) {
+            System.out.println("Stalemate");
+            isRunning = false;
         }
     }
 

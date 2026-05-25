@@ -130,4 +130,29 @@ public final class GameStateChecker {
             throw new IllegalArgumentException("King color cannot be null");
         }
     }
+
+    /**
+     * Checks whether the player with the given color is in stalemate
+     *
+     * @param board the chess board
+     * @param playerColor the player color to check
+     * @return true if the player is in stalemate
+     */
+    public static boolean isStalemate(final Board board, final Color playerColor) {
+        validateInputs(board, playerColor);
+
+        if (isCheck(board, playerColor)) {
+            return false;
+        }
+
+        final List<Piece> playerPieces = board.getPiecesByColor(playerColor);
+
+        for (final Piece piece : playerPieces) {
+            if (hasAnyLegalMove(board, piece)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
