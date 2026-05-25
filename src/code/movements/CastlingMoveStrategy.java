@@ -46,10 +46,10 @@ public class CastlingMoveStrategy implements MoveStrategy {
         final Piece rook = board.getPieceAt(rookSquare);
 
         return rook instanceof Rook
+                && rook.getOwner().getColor() == king.getOwner().getColor()
                 && !rook.hasMoved()
                 && isPathClear(board, from, rookSquare);
     }
-
     /**
      * Checks whether the input values are valid enough for castling validation
      *
