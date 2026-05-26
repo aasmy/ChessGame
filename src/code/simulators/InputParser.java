@@ -1,6 +1,7 @@
 package simulators;
 
 import components.Square;
+import exceptions.InvalidInputException;
 
 /**
  * Converts user text input into board squares
@@ -28,7 +29,7 @@ public class InputParser {
         final String[] parts = moveText.trim().toLowerCase().split("\\s+");
 
         if (parts.length != EXPECTED_MOVE_PARTS) {
-            throw new IllegalArgumentException("Move must contain two squares");
+            throw new InvalidInputException("Move must contain two squares");
         }
 
         return new Square[] {
@@ -62,7 +63,7 @@ public class InputParser {
      */
     private void validateMoveText(final String moveText) {
         if (moveText == null || moveText.trim().isEmpty()) {
-            throw new IllegalArgumentException("Move text cannot be empty");
+            throw new InvalidInputException("Move text cannot be empty");
         }
     }
 
@@ -73,18 +74,18 @@ public class InputParser {
      */
     private void validateSquareText(final String squareText) {
         if (squareText == null || squareText.length() != SQUARE_TEXT_LENGTH) {
-            throw new IllegalArgumentException("Square must have file and rank");
+            throw new InvalidInputException("Square must have file and rank");
         }
 
         final char file = squareText.charAt(FILE_INDEX);
         final char rank = squareText.charAt(RANK_INDEX);
 
         if (file < FIRST_FILE || file > LAST_FILE) {
-            throw new IllegalArgumentException("Square file must be between a and h");
+            throw new InvalidInputException("Square file must be between a and h");
         }
 
         if (rank < FIRST_RANK || rank > LAST_RANK) {
-            throw new IllegalArgumentException("Square rank must be between 1 and 8");
+            throw new InvalidInputException("Square rank must be between 1 and 8");
         }
     }
 }

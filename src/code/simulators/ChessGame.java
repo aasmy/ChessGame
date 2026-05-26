@@ -5,6 +5,7 @@ import components.Color;
 import components.PieceType;
 import components.Player;
 import components.Square;
+import exceptions.InvalidInputException;
 import exceptions.InvalidMoveException;
 import pieces.Pawn;
 import pieces.Piece;
@@ -147,6 +148,8 @@ public class ChessGame {
             printCheckMessageIfNeeded();
             printBoard();
         } catch (final InvalidMoveException exception) {
+            System.out.println(exception.getMessage());
+        } catch (final InvalidInputException exception) {
             System.out.println(exception.getMessage());
         } catch (final IllegalArgumentException exception) {
             System.out.println(exception.getMessage());
