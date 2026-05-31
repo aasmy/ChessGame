@@ -1,8 +1,10 @@
 package board;
 
+import components.Color;
 import components.PieceType;
 import components.Player;
 import components.Square;
+import pieces.Piece;
 import pieces.PieceFactory;
 
 /**
@@ -10,6 +12,9 @@ import pieces.PieceFactory;
  */
 public class StandardChessBoard extends Board {
     private static final int BOARD_SIZE = 8;
+    private static final String RESET_COLOR = "\u001B[0m";
+    private static final String WHITE_PIECE_COLOR = "\u001B[97m";
+    private static final String BLACK_PIECE_COLOR = "\u001B[36m";
 
     private static final int BLACK_MAJOR_PIECES_ROW = 0;
     private static final int BLACK_PAWNS_ROW = 1;
@@ -66,14 +71,25 @@ public class StandardChessBoard extends Board {
         for (int column = FIRST_COLUMN; column < getColumns(); column++) {
             final Square location = new Square(row, column);
 
-            if (isEmpty(location)) {
-                System.out.print("- ");
-            } else {
-                System.out.print(getPieceAt(location).getSymbol() + " ");
-            }
+            System.out.print(getSquareSymbol(location) + " ");
         }
 
         System.out.println();
+    }
+
+    private String getSquareSymbol(final Square location) {
+        if (isEmpty(location)) {
+            return "-";
+        }
+
+        final Piece piece = getPieceAt(location);
+        final String symbol = piece.getSymbol();
+
+        if (piece.getOwner().getColor() == Color.BLACK) {
+            return BLACK_PIECE_COLOR + symbol.toLowerCase() + RESET_COLOR;
+        }
+
+        return WHITE_PIECE_COLOR + symbol + RESET_COLOR;
     }
 
     private void initializeMajorPieces(final Player player, final int row)
