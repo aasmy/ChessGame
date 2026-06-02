@@ -189,7 +189,7 @@ This package contains simple objects and enums used across the project. `Square`
 
 Concrete pieces do not duplicate movement logic. Instead, they attach the movement strategies they need.
 
-![Queen class code](docs/images/queenclass.png)
+![Queen class code](docs/images/QueenClass.png)
 
 This is why the queen does not need a large custom movement method. It reuses movement behavior that is also useful for rooks and bishops.
 
