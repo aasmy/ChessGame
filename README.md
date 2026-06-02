@@ -4,7 +4,6 @@
   <summary>Table of Contents</summary>
 
 - [What This Project Shows](#what-this-project-shows)
-- [Architecture Snapshot](#architecture-snapshot)
 - [Current Scope](#current-scope)
 - [Project Structure](#project-structure)
 - [Design Overview](#design-overview)
@@ -34,32 +33,6 @@ This project shows how a chess engine can be organized around clear responsibili
 The main technical ideas shown in this project are inheritance, composition, polymorphism, Strategy Pattern, Chain of Responsibility, a simple factory-style piece creator, custom exceptions, and temporary board simulation for checking whether a move leaves the king in danger.
 
 I tried to keep the design balanced. Some design patterns are used because they solve real problems in the project, but the code avoids adding extra classes only to make the architecture look bigger.
-
-## Architecture Snapshot
-
-`ChessGame` coordinates the game, but the actual work is split across parser, validator, executor, board, pieces, movement strategies, handlers, game-state checker, and special move classes.
-
-```mermaid
-flowchart TD
-    Main[Main] --> Game[ChessGame]
-
-    Game --> Parser[InputParser]
-    Game --> Validator[InputValidator]
-    Game --> Executor[MoveExecutor]
-    Game --> State[GameStateChecker]
-    Game --> Board[StandardChessBoard]
-
-    Board --> Piece[Piece]
-    Piece --> Strategy[MoveStrategy]
-    Strategy --> Handler[Validation Handlers]
-
-    Validator --> State
-    Executor --> Castling[Castling]
-    Game --> Promotion[Promotion]
-
-    Board --> Factory[PieceFactory]
-    Factory --> ConcretePieces[King / Queen / Rook / Bishop / Knight / Pawn]
-```
 
 ## Current Scope
 
@@ -217,7 +190,7 @@ This package contains simple objects and enums used across the project. `Square`
 
 Concrete pieces do not duplicate movement logic. Instead, they attach the movement strategies they need.
 
-![Queen class code](src/screenshots/queenclass.png)
+![Queen class code](docs/images/queenclass.png)
 
 This is why the queen does not need a large custom movement method. It reuses movement behavior that is also useful for rooks and bishops.
 
