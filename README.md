@@ -1,7 +1,6 @@
 # ChessGame
 
-<details>
-  <summary>Table of Contents</summary>
+Table of Contents
 
 - [What This Project Shows](#what-this-project-shows)
 - [Current Scope](#current-scope)
@@ -20,7 +19,7 @@
 - [Manual Tests](#manual-tests)
 - [Current Limitations and Future Improvements](#current-limitations-and-future-improvements)
 
-</details>
+
 
 ChessGame is a Java console chess engine built to demonstrate object-oriented design through a rule-heavy domain. The project focuses on separating board state, piece behavior, movement validation, game-state checking, and special move execution instead of placing all chess logic inside one large class.
 
